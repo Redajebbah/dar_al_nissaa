@@ -1,6 +1,6 @@
 require('dotenv').config({ path: require('path').join(__dirname, '.env'), override: true });
 const { Telegraf } = require('telegraf');
-const Anthropic    = require('@anthropic-ai/sdk');
+const Groq         = require('groq-sdk');
 const fetch        = require('node-fetch');
 const FormData     = require('form-data');
 const path         = require('path');
@@ -10,15 +10,15 @@ const BOT_TOKEN      = process.env.TELEGRAM_BOT_TOKEN;
 const ADMIN_CHAT_ID  = process.env.ADMIN_TELEGRAM_CHAT_ID;
 const API_BASE       = process.env.SITE_URL || 'http://localhost:3000';
 const ADMIN_SECRET   = process.env.ADMIN_SECRET;
-const ANTHROPIC_KEY  = process.env.ANTHROPIC_API_KEY;
+const GROQ_KEY       = process.env.GROQ_API_KEY;
 
-if (!BOT_TOKEN || !ADMIN_CHAT_ID || !ADMIN_SECRET || !ANTHROPIC_KEY) {
+if (!BOT_TOKEN || !ADMIN_CHAT_ID || !ADMIN_SECRET || !GROQ_KEY) {
   console.error('❌ Missing env vars. Check bot/.env');
   process.exit(1);
 }
 
-const bot       = new Telegraf(BOT_TOKEN);
-const anthropic = new Anthropic({ apiKey: ANTHROPIC_KEY });
+const bot  = new Telegraf(BOT_TOKEN);
+const groq = new Groq({ apiKey: GROQ_KEY });
 
 // ── State — last uploaded image waiting to be attached ───────────────────────
 let pendingImage = null; // { path, filename }
@@ -131,21 +131,23 @@ Exemples de ce que l'admin peut dire:
 - "associe l'image à la takchita" → ATTACH_IMAGE
 - "mets le qr-001 en promotion à 350 MAD, prix original 440 MAD" → UPDATE avec originalPrice`;
 
-async function askClaude(userMessage, products) {
+async function askGroq(userMessage, products) {
   const context = products
     ? `\nProduits actuels (${products.length}):\n` + products
         .map((p) => `[${p.id}] ${p.name.fr} — ${p.price} MAD (${p.category})`)
         .join('\n')
     : '';
 
-  const response = await anthropic.messages.create({
-    model: 'claude-haiku-4-5',
+  const response = await groq.chat.completions.create({
+    model: 'llama-3.3-70b-versatile',
     max_tokens: 1024,
-    system: SYSTEM_PROMPT + context,
-    messages: [{ role: 'user', content: userMessage }],
+    messages: [
+      { role: 'system', content: SYSTEM_PROMPT + context },
+      { role: 'user',   content: userMessage },
+    ],
   });
 
-  const raw = response.content[0].text.trim().replace(/```json\n?|```\n?/g, '').trim();
+  const raw = response.choices[0].message.content.trim().replace(/```json\n?|```\n?/g, '').trim();
   return JSON.parse(raw);
 }
 
@@ -189,7 +191,7 @@ bot.on('text', async (ctx) => {
   try {
     const db       = await apiGet('/api/admin/products');
     const products = db.products || [];
-    const action   = await askClaude(msg, products);
+    const action   = await askGroq(msg, products);
 
     switch (action.action) {
 
@@ -348,7 +350,7 @@ bot.on('photo', async (ctx) => {
     if (caption) {
       const db       = await apiGet('/api/admin/products');
       const products = db.products || [];
-      const action   = await askClaude(`Associe l'image ${result.path} à ce produit: ${caption}`, products);
+      const action   = await askGroq(`Associe l'image ${result.path} à ce produit: ${caption}`, products);
 
       if (action.action === 'ATTACH_IMAGE' && action.data?.query) {
         const query = action.data.query.toLowerCase();
