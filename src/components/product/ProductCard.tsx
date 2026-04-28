@@ -4,8 +4,9 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Heart, ShoppingBag, Eye } from 'lucide-react';
+import { Heart, ShoppingBag, Eye, Scissors, Gem, Zap, TrendingUp, Tag } from 'lucide-react';
 import type { Product, ProductTag } from '@/types';
+import type { LucideIcon } from 'lucide-react';
 import { formatPrice, formatDiscount } from '@/lib/utils';
 import { useCartStore } from '@/store/cartStore';
 import Badge from '@/components/ui/Badge';
@@ -19,12 +20,12 @@ const categoryLabels: Record<string, string> = {
   'qmayess-rbati': 'Qmayess Rbati',
 };
 
-const tagConfig: Record<ProductTag, { label: string; className: string }> = {
-  handmade: { label: '🧵 Fait Main', className: 'bg-amber-100 text-amber-800' },
-  luxury: { label: '✨ Luxe', className: 'bg-yellow-100 text-yellow-800' },
-  'new-collection': { label: '🆕 Nouveau', className: 'bg-blue-100 text-blue-800' },
-  bestseller: { label: '⭐ Best-seller', className: 'bg-orange-100 text-orange-800' },
-  promotion: { label: '🏷️ Promo', className: 'bg-red-100 text-red-800' },
+const tagConfig: Record<ProductTag, { label: string; icon: LucideIcon; className: string }> = {
+  handmade:         { label: 'Fait Main',    icon: Scissors,   className: 'bg-amber-50 text-amber-700 border border-amber-200' },
+  luxury:           { label: 'Luxe',         icon: Gem,        className: 'bg-yellow-50 text-yellow-700 border border-yellow-200' },
+  'new-collection': { label: 'Nouveau',      icon: Zap,        className: 'bg-blue-50 text-blue-700 border border-blue-200' },
+  bestseller:       { label: 'Best-seller',  icon: TrendingUp, className: 'bg-orange-50 text-orange-700 border border-orange-200' },
+  promotion:        { label: 'Promo',        icon: Tag,        className: 'bg-red-50 text-red-700 border border-red-200' },
 };
 
 interface ProductCardProps {
@@ -153,14 +154,20 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
           {/* Tags */}
           {displayTags.length > 0 && (
             <div className="flex flex-wrap gap-1 mb-2">
-              {displayTags.map((tag) => (
-                <span
-                  key={tag}
-                  className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full ${tagConfig[tag]?.className}`}
-                >
-                  {tagConfig[tag]?.label}
-                </span>
-              ))}
+              {displayTags.map((tag) => {
+                const cfg = tagConfig[tag];
+                if (!cfg) return null;
+                const Icon = cfg.icon;
+                return (
+                  <span
+                    key={tag}
+                    className={`inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full ${cfg.className}`}
+                  >
+                    <Icon size={9} strokeWidth={2.5} />
+                    {cfg.label}
+                  </span>
+                );
+              })}
             </div>
           )}
 

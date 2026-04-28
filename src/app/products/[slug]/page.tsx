@@ -13,6 +13,8 @@ import {
   Truck,
   RotateCcw,
   MessageCircle,
+  Scissors,
+  Gem,
 } from 'lucide-react';
 import { getProductBySlug, getRelatedProducts, categories } from '@/data/products';
 import ProductGallery from '@/components/product/ProductGallery';
@@ -136,13 +138,13 @@ export default function ProductPage() {
                 </span>
               )}
               {product.tags?.includes('handmade') && (
-                <span className="bg-amber-100 text-amber-800 text-xs font-semibold px-2.5 py-1 rounded-full">
-                  🧵 Fait Main
+                <span className="inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 border border-amber-200 text-xs font-semibold px-2.5 py-1 rounded-full">
+                  <Scissors size={11} strokeWidth={2.5} /> Fait Main
                 </span>
               )}
               {product.tags?.includes('luxury') && (
-                <span className="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-1 rounded-full">
-                  ✨ Luxe
+                <span className="inline-flex items-center gap-1.5 bg-yellow-50 text-yellow-700 border border-yellow-200 text-xs font-semibold px-2.5 py-1 rounded-full">
+                  <Gem size={11} strokeWidth={2.5} /> Luxe
                 </span>
               )}
             </div>

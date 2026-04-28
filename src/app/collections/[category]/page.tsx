@@ -23,11 +23,11 @@ const sortOptions: { value: SortOption; label: string }[] = [
 const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'Sur Mesure'];
 
 const tagLabels: Record<ProductTag, string> = {
-  handmade: '🧵 Fait Main',
-  luxury: '✨ Luxe',
-  'new-collection': '🆕 Nouvelle Collection',
-  bestseller: '⭐ Best-seller',
-  promotion: '🏷️ Promo',
+  handmade: 'Fait Main',
+  luxury: 'Luxe',
+  'new-collection': 'Nouvelle Collection',
+  bestseller: 'Best-seller',
+  promotion: 'Promotion',
 };
 
 const validSlugs = [
