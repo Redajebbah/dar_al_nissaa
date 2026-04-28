@@ -1,0 +1,322 @@
+import type { Product, CategoryInfo } from '@/types';
+
+// ─── Products (real photos only) ─────────────────────────────────────────────
+
+export const products: Product[] = [
+
+  // ── Qmiss Jouhara ────────────────────────────────────────────────────────────
+
+  {
+    id: 'qj-001',
+    name: { fr: 'Qmiss Jouhara Sfifa Premium', ar: 'قميص جوهرة السفيفة بريميوم' },
+    slug: 'qmiss-jouhara-sfifa-premium',
+    price: 420,
+    originalPrice: 550,
+    images: ['/products/jouhara-bsfifa.jpg'],
+    category: 'qmiss-jouhara',
+    subcategory: 'sfifa-designs',
+    sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+    colors: [
+      { name: 'Champagne Doré', nameAr: 'شامبانيا ذهبي', hex: '#F0E6C8' },
+      { name: 'Blanc Ivoire', nameAr: 'أبيض عاجي', hex: '#FFFFF0' },
+      { name: 'Émeraude', nameAr: 'زمردي', hex: '#1B4332' },
+    ],
+    description: {
+      fr: 'Qmiss Jouhara en satin champagne avec bandes sfifa dorées cousues à la main sur toute la longueur. Col V élégant bordé d\'un galon fin, sfifa verticale du col à l\'ourlet, poignets ornés. Livré avec ceinture assortie.',
+      ar: 'قميص جوهرة من الساتان الشامبانيا مع أشرطة سفيفة ذهبية مخيطة يدوياً على كامل الطول. ياقة V أنيقة مزينة بشريط رفيع، سفيفة عمودية من الياقة إلى الحاشية. يأتي مع حزام متناسق.',
+    },
+    material: 'Satin premium, sfifa dorée artisanale',
+    fabric: 'Satin',
+    tags: ['handmade', 'new-collection'],
+    inStock: true,
+    isNew: true,
+    isFeatured: true,
+    rating: 4.9,
+    reviews: 38,
+  },
+
+  {
+    id: 'qj-002',
+    name: { fr: 'Qmiss Jouhara Maalam Bleu Royal', ar: 'قميص جوهرة المعلم الأزرق الملكي' },
+    slug: 'qmiss-jouhara-maalam-bleu',
+    price: 520,
+    images: ['/products/qmiss-jouhara-maallem-bleu.jpg'],
+    category: 'qmiss-jouhara',
+    subcategory: 'maalam-handmade',
+    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+    colors: [
+      { name: 'Bleu Royal & Or', nameAr: 'أزرق ملكي وذهبي', hex: '#2C4A9C' },
+      { name: 'Bordeaux & Or', nameAr: 'عنابي وذهبي', hex: '#7B1827' },
+      { name: 'Vert & Or', nameAr: 'أخضر وذهبي', hex: '#1B4332' },
+    ],
+    description: {
+      fr: 'Qmiss Jouhara Maalam en satin bleu royal avec broderies dorées au décolleté et aux poignets. Livré avec serwal assorti. Tissu satiné brillant, effet luxueux garanti. Création signature du Maalam.',
+      ar: 'قميص جوهرة معلم من الساتان الأزرق الملكي، تطريز ذهبي عند الياقة والأكمام. يأتي مع سروال متناسق. قماش ساتان لامع، مظهر فاخر مضمون.',
+    },
+    material: 'Satin bleu royal, broderies dorées, avec serwal',
+    fabric: 'Satin',
+    tags: ['handmade', 'luxury'],
+    inStock: true,
+    isNew: false,
+    isFeatured: true,
+    rating: 5.0,
+    reviews: 21,
+  },
+
+  {
+    id: 'qj-003',
+    name: { fr: 'Qmiss Jouhara Maalam Classique', ar: 'قميص جوهرة المعلم الكلاسيكي' },
+    slug: 'qmiss-jouhara-maalam-classique',
+    price: 490,
+    images: ['/products/qmiss-jouhara-maallem.jpg'],
+    category: 'qmiss-jouhara',
+    subcategory: 'maalam-handmade',
+    sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+    colors: [
+      { name: 'Champagne & Or', nameAr: 'شامبانيا وذهبي', hex: '#F0E6C8' },
+      { name: 'Blanc & Or', nameAr: 'أبيض وذهبي', hex: '#FFFFF0' },
+      { name: 'Noir & Or', nameAr: 'أسود وذهبي', hex: '#1C1C1C' },
+    ],
+    description: {
+      fr: 'Le classique Maalam par excellence : qmiss en satin champagne avec bandes sfifa dorées verticales, col V bordé, ceinture assortie incluse. Livré avec serwal coordonné. Notre bestseller absolu.',
+      ar: 'الكلاسيكي المعلم بامتياز: قميص من الساتان الشامبانيا مع أشرطة سفيفة ذهبية عمودية، ياقة V مزينة، حزام متناسق مشمول. يأتي مع سروال منسجم.',
+    },
+    material: 'Satin champagne, sfifa dorée, ceinture + serwal inclus',
+    fabric: 'Satin',
+    tags: ['handmade', 'bestseller'],
+    inStock: true,
+    isNew: false,
+    isFeatured: true,
+    rating: 4.9,
+    reviews: 87,
+  },
+
+  // ── Qmiss Ghourza ─────────────────────────────────────────────────────────────
+
+  {
+    id: 'qg-001',
+    name: { fr: 'Qmiss Ghourza avec Serwal', ar: 'قميص غرزة مع السروال' },
+    slug: 'qmiss-ghourza-avec-serwal',
+    price: 580,
+    originalPrice: 720,
+    images: ['/products/qmiss-ghourza-bserwal.jpg'],
+    category: 'qmiss-ghourza',
+    subcategory: 'with-serwal',
+    sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+    colors: [
+      { name: 'Blanc & Vert', nameAr: 'أبيض وأخضر', hex: '#FFFFFF' },
+      { name: 'Blanc & Or', nameAr: 'أبيض وذهبي', hex: '#FFF9F0' },
+      { name: 'Blanc & Bordeaux', nameAr: 'أبيض وعنابي', hex: '#FFF5F5' },
+    ],
+    description: {
+      fr: 'Ensemble deux pièces qmiss + serwal en coton blanc avec broderies géométriques vert émeraude. Broderies au col en V, aux poignets et à l\'ourlet du serwal. Tissu coton doux et respirant, idéal pour toutes occasions.',
+      ar: 'طقم قطعتين قميص + سروال من القطن الأبيض مع تطريز هندسي أخضر زمردي. تطريز عند ياقة V والمعصمين وحاشية السروال. قماش قطن ناعم يسمح بالتهوية.',
+    },
+    material: 'Coton blanc brodé, ensemble complet',
+    fabric: 'Coton',
+    tags: ['new-collection', 'bestseller'],
+    inStock: true,
+    isNew: true,
+    isFeatured: true,
+    rating: 4.8,
+    reviews: 34,
+  },
+
+  {
+    id: 'qg-002',
+    name: { fr: 'Qmiss Ghourza Modèle Simple', ar: 'قميص غرزة النموذج البسيط' },
+    slug: 'qmiss-ghourza-modele-simple',
+    price: 280,
+    images: [
+      '/products/qmiss-ghourza-simple.jpg',
+      '/products/qmiss-ghourza-simple-detail.jpg',
+    ],
+    category: 'qmiss-ghourza',
+    subcategory: 'simple-models',
+    sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+    colors: [
+      { name: 'Blanc Brodé Rose', nameAr: 'أبيض مطرز وردي', hex: '#FFFFFF' },
+      { name: 'Ivoire', nameAr: 'عاجي', hex: '#FFFFF0' },
+      { name: 'Bleu Pâle', nameAr: 'أزرق فاتح', hex: '#E8F4FD' },
+    ],
+    description: {
+      fr: 'Qmiss Ghourza en jacquard blanc avec broderies florales roses et finitions en dentelle argentée. Col rond orné d\'un galon argenté délicat, bande centrale brodée verticale, poignets en dentelle assortie. Tissu jacquard précieux avec motifs cachemire subtilement tissés.',
+      ar: 'قميص غرزة من الجاكار الأبيض مع تطريز زهري وردي وتشطيبات بالدانتيل الفضي. ياقة دائرية مزينة بشريط فضي رقيق، شريط وسطي مطرز عمودي، أكمام بدانتيل متناسق.',
+    },
+    material: 'Jacquard tissu précieux, galon argenté',
+    fabric: 'Jacquard',
+    tags: ['bestseller', 'handmade'],
+    inStock: true,
+    isNew: false,
+    isFeatured: true,
+    rating: 4.8,
+    reviews: 112,
+  },
+
+  // ── Takchita ──────────────────────────────────────────────────────────────────
+
+  {
+    id: 'ta-001',
+    name: { fr: 'Takchita Fuchsia & Or', ar: 'تكشيطة فوشيا وذهب' },
+    slug: 'takchita-fuchsia-or',
+    price: 950,
+    originalPrice: 1200,
+    images: ['/products/takchita.jpg'],
+    category: 'takchita',
+    subcategory: 'two-piece',
+    sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+    colors: [
+      { name: 'Fuchsia & Or', nameAr: 'فوشيا وذهبي', hex: '#C2185B' },
+      { name: 'Bordeaux & Or', nameAr: 'عنابي وذهبي', hex: '#8B0000' },
+      { name: 'Bleu Royal & Or', nameAr: 'أزرق ملكي وذهبي', hex: '#2C4A9C' },
+    ],
+    description: {
+      fr: 'Takchita en tissu fuchsia avec broderies dorées florales et arabesques denses sur toute la surface. Ceinture dorée assortie incluse. Les broderies en fil doré reflètent la lumière avec élégance. Pour les mariages et grandes occasions.',
+      ar: 'تكشيطة من قماش الفوشيا مع تطريز ذهبي زهري وزخارف عربية كثيفة على كامل السطح. حزام ذهبي متناسق مشمول. التطريز بالخيط الذهبي يعكس الضوء بأناقة. للأعراس والمناسبات الكبرى.',
+    },
+    material: 'Tissu fuchsia, broderies fil doré dense, ceinture incluse',
+    fabric: 'Tissé',
+    tags: ['luxury', 'new-collection'],
+    inStock: true,
+    isNew: true,
+    isFeatured: true,
+    rating: 4.9,
+    reviews: 26,
+  },
+
+  // ── Qmayess Rbati ─────────────────────────────────────────────────────────────
+
+  {
+    id: 'qr-001',
+    name: { fr: 'Qmiss Rbati Classique', ar: 'القميص الرباطي الكلاسيكي' },
+    slug: 'qmiss-rbati-classique',
+    price: 440,
+    images: ['/products/qmiss-rbati-classique.jpg'],
+    category: 'qmayess-rbati',
+    subcategory: 'classic-rbati',
+    sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+    colors: [
+      { name: 'Blanc & Vert Émeraude', nameAr: 'أبيض وأخضر زمردي', hex: '#FFFFFF' },
+      { name: 'Blanc & Bordeaux', nameAr: 'أبيض وعنابي', hex: '#FFF8F8' },
+      { name: 'Blanc & Bleu Royal', nameAr: 'أبيض وأزرق ملكي', hex: '#F8F8FF' },
+    ],
+    description: {
+      fr: 'Qmiss Rbati authentique en jacquard blanc avec broderies florales vert émeraude et fils dorés. Bande centrale en dentelle fine du col jusqu\'à l\'ourlet, finitions dentelle au col, poignets et bas de robe. Les fleurs brodées à la main incarnent le savoir-faire traditionnel de Rabat.',
+      ar: 'قميص رباطي أصيل من الجاكار الأبيض مع تطريز زهري أخضر زمردي وخيوط ذهبية. شريط دانتيل مركزي رفيع من الياقة إلى الحاشية. الزهور المطرزة يدوياً تجسد المهارة التقليدية الرباطية.',
+    },
+    material: 'Jacquard blanc, broderies soie & fils dorés',
+    fabric: 'Jacquard',
+    tags: ['handmade', 'bestseller'],
+    inStock: true,
+    isNew: false,
+    isFeatured: true,
+    rating: 4.9,
+    reviews: 76,
+  },
+];
+
+// ─── Categories (only those with products) ───────────────────────────────────
+
+export const categories: CategoryInfo[] = [
+  {
+    slug: 'qmiss-jouhara',
+    nameFr: 'Qmiss Jouhara',
+    nameAr: 'قميص جوهرة',
+    description: 'Broderies artisanales signature, sfifa & style Maalam',
+    image: '/products/jouhara-bsfifa.jpg',
+    count: products.filter((p) => p.category === 'qmiss-jouhara').length,
+    subcategories: [
+      { slug: 'sfifa-designs', nameFr: 'Sfifa Designs', nameAr: 'تصاميم السفيفة' },
+      { slug: 'maalam-handmade', nameFr: 'Maalam Handmade', nameAr: 'المعلم الحرفي' },
+      { slug: 'randa-style', nameFr: 'Randa Style', nameAr: 'أسلوب راندة' },
+    ],
+  },
+  {
+    slug: 'qmiss-ghourza',
+    nameFr: 'Qmiss Ghourza',
+    nameAr: 'قميص غرزة',
+    description: 'Avec Serwal, coupes simples ou modernes',
+    image: '/products/qmiss-ghourza-bserwal.jpg',
+    count: products.filter((p) => p.category === 'qmiss-ghourza').length,
+    subcategories: [
+      { slug: 'with-serwal', nameFr: 'Avec Serwal', nameAr: 'مع السروال' },
+      { slug: 'simple-models', nameFr: 'Modèles Simples', nameAr: 'نماذج بسيطة' },
+      { slug: 'modern-cuts', nameFr: 'Coupes Modernes', nameAr: 'قطع عصرية' },
+    ],
+  },
+  {
+    slug: 'takchita',
+    nameFr: 'Takchita',
+    nameAr: 'التكشيطة',
+    description: 'Deux pièces, trois pièces & tenues de mariée',
+    image: '/products/takchita.jpg',
+    count: products.filter((p) => p.category === 'takchita').length,
+    subcategories: [
+      { slug: 'two-piece', nameFr: 'Deux Pièces', nameAr: 'قطعتان' },
+      { slug: 'three-piece', nameFr: 'Trois Pièces', nameAr: 'ثلاث قطع' },
+      { slug: 'bridal', nameFr: 'Tenues Mariée', nameAr: 'أزياء العروس' },
+    ],
+  },
+  {
+    slug: 'qmayess-rbati',
+    nameFr: 'Qmayess Rbati',
+    nameAr: 'القمايص الرباطية',
+    description: 'Le raffinement de Rabat, classique ou moderne',
+    image: '/products/qmiss-rbati-classique.jpg',
+    count: products.filter((p) => p.category === 'qmayess-rbati').length,
+    subcategories: [
+      { slug: 'classic-rbati', nameFr: 'Classique Rbati', nameAr: 'رباطي كلاسيكي' },
+      { slug: 'modern-rbati', nameFr: 'Moderne Rbati', nameAr: 'رباطي حديث' },
+      { slug: 'light-casual', nameFr: 'Léger & Casual', nameAr: 'خفيف وكاجوال' },
+    ],
+  },
+];
+
+// ─── Helper functions ─────────────────────────────────────────────────────────
+
+export function getProductBySlug(slug: string): Product | undefined {
+  return products.find((p) => p.slug === slug);
+}
+
+export function getProductsByCategory(category: string): Product[] {
+  return products.filter((p) => p.category === category);
+}
+
+export function getProductsBySubcategory(subcategory: string): Product[] {
+  return products.filter((p) => p.subcategory === subcategory);
+}
+
+export function getProductsByFabric(fabric: string): Product[] {
+  return products.filter((p) => p.fabric === fabric);
+}
+
+export function getProductsByTag(tag: string): Product[] {
+  return products.filter((p) => p.tags?.includes(tag as never));
+}
+
+export function getFeaturedProducts(): Product[] {
+  return products.filter((p) => p.isFeatured);
+}
+
+export function getNewProducts(limit?: number): Product[] {
+  const newOnes = products.filter((p) => p.isNew);
+  return limit ? newOnes.slice(0, limit) : newOnes;
+}
+
+export function getBestSellers(limit?: number): Product[] {
+  const best = products.filter((p) => p.tags?.includes('bestseller'));
+  return limit ? best.slice(0, limit) : best;
+}
+
+export function getPromotions(limit?: number): Product[] {
+  const promo = products.filter((p) => p.originalPrice && p.originalPrice > p.price);
+  return limit ? promo.slice(0, limit) : promo;
+}
+
+export function getRelatedProducts(product: Product, limit = 4): Product[] {
+  return products
+    .filter((p) => p.category === product.category && p.id !== product.id)
+    .slice(0, limit);
+}
+
+export const allFabrics = Array.from(new Set(products.map((p) => p.fabric).filter(Boolean))) as string[];

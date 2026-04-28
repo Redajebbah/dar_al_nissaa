@@ -1,0 +1,152 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Google Fonts ─────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* ─── CSS Variables ─────────────────────────────────────────────────────────── */
+:root {
+  --color-emerald: #1B4332;
+  --color-gold: #C9A84C;
+  --color-cream: #FAF7F2;
+  --font-inter: 'Inter', sans-serif;
+  --font-playfair: 'Playfair Display', Georgia, serif;
+  --font-amiri: 'Amiri', serif;
+}
+
+/* ─── Base ──────────────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-inter);
+  background-color: var(--color-cream);
+  color: #1a1a1a;
+  cursor: none; /* Custom cursor handles it on desktop */
+  overflow-x: hidden;
+}
+
+@media (max-width: 1023px) {
+  body { cursor: auto; }
+}
+
+/* ─── Typography ────────────────────────────────────────────────────────────── */
+.font-serif {
+  font-family: var(--font-playfair);
+}
+
+.font-arabic {
+  font-family: var(--font-amiri);
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-gold);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-emerald);
+}
+
+/* ─── Selection ─────────────────────────────────────────────────────────────── */
+::selection {
+  background: #C9A84C33;
+  color: var(--color-emerald);
+}
+
+/* ─── Animations ────────────────────────────────────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Utility Classes ───────────────────────────────────────────────────────── */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    #f0e9dc 0%,
+    #faf7f2 50%,
+    #f0e9dc 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+/* ─── RTL Support ───────────────────────────────────────────────────────────── */
+[dir="rtl"] {
+  font-family: var(--font-amiri);
+}
+
+/* ─── Image lazy loading blur-up ────────────────────────────────────────────── */
+img {
+  transition: filter 0.3s ease;
+}
+
+img[data-loading="true"] {
+  filter: blur(10px);
+}
+
+/* ─── Focus styles ──────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ─── Moroccan pattern backgrounds ─────────────────────────────────────────── */
+.pattern-bg {
+  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9A84C' fill-opacity='0.06'%3E%3Cpath d='M40,10 L44,28 L62,22 L52,36 L70,38 L56,46 L68,60 L50,54 L46,72 L40,56 L34,72 L30,54 L12,60 L24,46 L10,38 L28,36 L18,22 L36,28 Z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ─── Hide scrollbar for horizontal scroll containers ──────────────────────── */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ─── Page transition container ─────────────────────────────────────────────── */
+.page-transition {
+  will-change: opacity, transform;
+}
+
+/* ─── Product card hover effect ─────────────────────────────────────────────── */
+.product-card-img {
+  will-change: transform;
+}
