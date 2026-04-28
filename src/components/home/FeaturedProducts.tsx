@@ -4,30 +4,42 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Sparkles, Zap, TrendingUp, Tag } from 'lucide-react';
-import { getFeaturedProducts, getNewProducts, getBestSellers, getPromotions } from '@/data/products';
 import ProductCard from '@/components/product/ProductCard';
 import { StaggerContainer, StaggerItem } from '@/components/animations/ScrollReveal';
 import ScrollReveal from '@/components/animations/ScrollReveal';
 import { GeometricBorder } from '@/components/MoroccanPattern';
 import type { LucideIcon } from 'lucide-react';
+import type { Product } from '@/types';
 
 type Tab = 'featured' | 'new' | 'bestsellers' | 'promotions';
 
 const tabs: { id: Tab; label: string; icon: LucideIcon }[] = [
-  { id: 'featured',    label: 'Sélection',   icon: Sparkles   },
-  { id: 'new',         label: 'Nouveautés',  icon: Zap        },
+  { id: 'featured',    label: 'Sélection',    icon: Sparkles   },
+  { id: 'new',         label: 'Nouveautés',   icon: Zap        },
   { id: 'bestsellers', label: 'Best-sellers', icon: TrendingUp },
-  { id: 'promotions',  label: 'Promotions',  icon: Tag        },
+  { id: 'promotions',  label: 'Promotions',   icon: Tag        },
 ];
 
-export default function FeaturedProducts() {
+interface FeaturedProductsProps {
+  featured:    Product[];
+  newProducts: Product[];
+  bestsellers: Product[];
+  promotions:  Product[];
+}
+
+export default function FeaturedProducts({
+  featured,
+  newProducts,
+  bestsellers,
+  promotions,
+}: FeaturedProductsProps) {
   const [activeTab, setActiveTab] = useState<Tab>('featured');
 
   const products = {
-    featured:    getFeaturedProducts(),
-    new:         getNewProducts(),
-    bestsellers: getBestSellers(),
-    promotions:  getPromotions(),
+    featured,
+    new:         newProducts,
+    bestsellers,
+    promotions,
   };
 
   const displayed = products[activeTab].slice(0, 8);
@@ -63,7 +75,6 @@ export default function FeaturedProducts() {
                     isActive ? 'text-white' : 'text-emerald/50 hover:text-emerald'
                   }`}
                 >
-                  {/* Animated background */}
                   {isActive && (
                     <motion.span
                       layoutId="tab-pill"
@@ -71,24 +82,16 @@ export default function FeaturedProducts() {
                       transition={{ type: 'spring', bounce: 0.18, duration: 0.45 }}
                     />
                   )}
-
-                  {/* Icon */}
                   <Icon
                     size={14}
                     strokeWidth={isActive ? 2.5 : 1.8}
                     className="relative z-10 shrink-0"
                   />
-
-                  {/* Label */}
                   <span className="relative z-10 hidden sm:inline">{tab.label}</span>
-
-                  {/* Count badge — only on non-featured tabs */}
                   {tab.id !== 'featured' && count > 0 && (
                     <span
                       className={`relative z-10 text-[10px] font-bold min-w-[18px] h-[18px] flex items-center justify-center rounded-full leading-none px-1 ${
-                        isActive
-                          ? 'bg-white/20 text-white'
-                          : 'bg-emerald/8 text-emerald/60'
+                        isActive ? 'bg-white/20 text-white' : 'bg-emerald/8 text-emerald/60'
                       }`}
                     >
                       {count}
@@ -100,7 +103,7 @@ export default function FeaturedProducts() {
           </div>
         </div>
 
-        {/* Divider line under active tab label */}
+        {/* Divider */}
         <div className="flex justify-center mb-10">
           <div className="flex items-center gap-4">
             <div className="h-px w-16 bg-emerald/10" />

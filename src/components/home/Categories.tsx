@@ -2,13 +2,16 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { categories } from '@/data/products';
 import { StaggerContainer, StaggerItem } from '@/components/animations/ScrollReveal';
 import ScrollReveal from '@/components/animations/ScrollReveal';
 import { GeometricBorder } from '@/components/MoroccanPattern';
+import type { CategoryInfo } from '@/types';
 
-export default function Categories() {
+interface CategoriesProps {
+  categories: CategoryInfo[];
+}
+
+export default function Categories({ categories }: CategoriesProps) {
   return (
     <section className="py-20 md:py-28 bg-cream">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
