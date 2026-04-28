@@ -72,7 +72,7 @@ export default function CartDrawer() {
                     Découvrez nos collections et ajoutez vos articles préférés
                   </p>
                   <Link
-                    href="/collections/kaftan"
+                    href="/collections/qmiss-jouhara"
                     onClick={closeCart}
                     className="mt-4 bg-emerald text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-emerald-600 transition-colors"
                   >

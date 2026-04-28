@@ -92,7 +92,7 @@ export default function CheckoutPage() {
     return (
       <div className="min-h-screen pt-24 flex flex-col items-center justify-center gap-4 bg-cream">
         <p className="font-serif text-2xl text-emerald">Votre panier est vide</p>
-        <a href="/collections/kaftan" className="text-gold hover:underline">
+        <a href="/collections/qmiss-jouhara" className="text-gold hover:underline">
           Découvrir nos collections →
         </a>
       </div>
