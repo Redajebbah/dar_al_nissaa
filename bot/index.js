@@ -596,15 +596,13 @@ bot.on('text', async (ctx) => {
   }
 });
 
-// ── Photo messages ────────────────────────────────────────────────────────────
-bot.on('photo', async (ctx) => {
+// ── Shared photo/document upload handler ─────────────────────────────────────
+async function handleUpload(ctx, fileId, defaultExt) {
   await ctx.sendChatAction('upload_photo');
 
   try {
-    const photos   = ctx.message.photo;
-    const photo    = photos[photos.length - 1];
-    const file     = await ctx.telegram.getFile(photo.file_id);
-    const ext      = path.extname(file.file_path || '.jpg') || '.jpg';
+    const file     = await ctx.telegram.getFile(fileId);
+    const ext      = path.extname(file.file_path || defaultExt) || defaultExt;
     const filename = `product-${Date.now()}${ext}`;
     const fileUrl  = `https://api.telegram.org/file/bot${BOT_TOKEN}/${file.file_path}`;
 
@@ -656,14 +654,31 @@ bot.on('photo', async (ctx) => {
 
     await ctx.replyWithMarkdown(
       `📸 *Image uploadée!*\n\n` +
-      `📁 \`${result.path}\`\n\n` +
+      `🔗 \`${result.path}\`\n\n` +
       `Envoyez "associe l'image à [nom du produit]" pour l'attacher,\n` +
       `ou tapez "ajouter" pour créer un nouveau produit avec cette photo.`
     );
   } catch (err) {
-    console.error('Photo error:', err);
+    console.error('Upload error:', err);
     await ctx.reply(`❌ Erreur upload: ${err.message}`);
   }
+}
+
+// ── Photo messages (compressed) ───────────────────────────────────────────────
+bot.on('photo', async (ctx) => {
+  const photos = ctx.message.photo;
+  const photo  = photos[photos.length - 1]; // highest resolution
+  await handleUpload(ctx, photo.file_id, '.jpg');
+});
+
+// ── Document messages (original quality / file) ───────────────────────────────
+bot.on('document', async (ctx) => {
+  const doc      = ctx.message.document;
+  const mimeType = doc.mime_type || '';
+  if (!mimeType.startsWith('image/')) {
+    return ctx.reply('⚠️ Ce fichier n\'est pas une image. Envoyez une photo JPG, PNG ou WEBP.');
+  }
+  await handleUpload(ctx, doc.file_id, '.jpg');
 });
 
 // ── Launch ────────────────────────────────────────────────────────────────────
