@@ -77,12 +77,21 @@ export default function CheckoutPage() {
 
   const handleOrder = async () => {
     setLoading(true);
+    const orderId = `DN-${Date.now().toString(36).toUpperCase()}`;
+
+    // 1 — Telegram alert to admin (fire-and-forget, never blocks the client)
+    fetch('/api/notify-order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderId, form, items, total }),
+    }).catch(() => {/* silent */});
+
+    // 2 — WhatsApp message for the admin
     await new Promise((r) => setTimeout(r, 1200));
-    // Send WhatsApp message with full order details
     const message = buildWhatsAppMessage(items, form);
     openWhatsApp(message);
-    // Store order in sessionStorage for confirmation page
-    const orderId = `DN-${Date.now().toString(36).toUpperCase()}`;
+
+    // 3 — Store for confirmation page & navigate
     sessionStorage.setItem('lastOrder', JSON.stringify({ orderId, form, items, total }));
     clearCart();
     router.push('/confirmation');
