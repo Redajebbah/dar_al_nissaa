@@ -1,4 +1,5 @@
 import 'server-only';
+import { unstable_noStore as noStore } from 'next/cache';
 import fs from 'fs';
 import path from 'path';
 import type { Product, CategoryInfo } from '@/types';
@@ -12,6 +13,7 @@ interface DBData {
 }
 
 function readData(): DBData {
+  noStore(); // ← opt out of ALL Next.js caching — always read fresh from disk
   const raw = fs.readFileSync(DATA_PATH, 'utf-8');
   return JSON.parse(raw);
 }

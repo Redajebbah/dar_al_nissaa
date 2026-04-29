@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 const DATA_PATH = path.join(process.cwd(), 'data', 'products.json');
 
@@ -18,6 +18,9 @@ function writeData(data: unknown) {
 }
 
 function revalidateAll() {
+  // Tag-based invalidation — hits every page that reads product data
+  revalidateTag('products');
+  // Path-based invalidation — belt-and-suspenders
   revalidatePath('/', 'layout');
   revalidatePath('/collections/[category]', 'page');
   revalidatePath('/products/[slug]', 'page');
