@@ -1,35 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 import { revalidatePath, revalidateTag } from 'next/cache';
-
-const DATA_PATH = path.join(process.cwd(), 'data', 'products.json');
+import redis from '@/lib/redis';
+import { PRODUCTS_KEY, CATEGORIES_KEY } from '@/data/products';
+import type { Product } from '@/types';
 
 function auth(req: NextRequest) {
   return req.headers.get('x-admin-secret') === process.env.ADMIN_SECRET;
 }
 
-function readData() {
-  return JSON.parse(fs.readFileSync(DATA_PATH, 'utf-8'));
+async function readProducts(): Promise<Product[]> {
+  const data = await redis.get<Product[]>(PRODUCTS_KEY);
+  return data ?? [];
 }
 
-function writeData(data: unknown) {
-  fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2), 'utf-8');
+async function writeProducts(products: Product[]) {
+  await redis.set(PRODUCTS_KEY, products);
 }
 
 function revalidateAll() {
-  // Tag-based invalidation — hits every page that reads product data
   revalidateTag('products');
-  // Path-based invalidation — belt-and-suspenders
   revalidatePath('/', 'layout');
   revalidatePath('/collections/[category]', 'page');
   revalidatePath('/products/[slug]', 'page');
 }
 
-// ── GET — list all products ───────────────────────────────────────────────────
+// ── GET — list all products + categories ─────────────────────────────────────
 export async function GET(req: NextRequest) {
   if (!auth(req)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  return NextResponse.json(readData());
+  const [products, categories] = await Promise.all([
+    redis.get<Product[]>(PRODUCTS_KEY),
+    redis.get(CATEGORIES_KEY),
+  ]);
+  return NextResponse.json({ products: products ?? [], categories: categories ?? [] });
 }
 
 // ── POST — create product ─────────────────────────────────────────────────────
@@ -38,14 +40,17 @@ export async function POST(req: NextRequest) {
   try {
     const product = await req.json();
     if (!product.id || !product.slug || !product.name?.fr) {
-      return NextResponse.json({ error: 'Missing required fields: id, slug, name.fr' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Missing required fields: id, slug, name.fr' },
+        { status: 400 }
+      );
     }
-    const data = readData();
-    if (data.products.find((p: { id: string }) => p.id === product.id)) {
+    const products = await readProducts();
+    if (products.find((p) => p.id === product.id)) {
       return NextResponse.json({ error: 'Product ID already exists' }, { status: 409 });
     }
-    data.products.push(product);
-    writeData(data);
+    products.push(product);
+    await writeProducts(products);
     revalidateAll();
     return NextResponse.json({ success: true, product });
   } catch {
@@ -61,14 +66,14 @@ export async function PUT(req: NextRequest) {
     const { id, ...updates } = body;
     if (!id) return NextResponse.json({ error: 'Missing product id' }, { status: 400 });
 
-    const data = readData();
-    const idx = data.products.findIndex((p: { id: string }) => p.id === id);
+    const products = await readProducts();
+    const idx = products.findIndex((p) => p.id === id);
     if (idx === -1) return NextResponse.json({ error: 'Product not found' }, { status: 404 });
 
-    data.products[idx] = { ...data.products[idx], ...updates };
-    writeData(data);
+    products[idx] = { ...products[idx], ...updates };
+    await writeProducts(products);
     revalidateAll();
-    return NextResponse.json({ success: true, product: data.products[idx] });
+    return NextResponse.json({ success: true, product: products[idx] });
   } catch {
     return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
   }
@@ -80,13 +85,12 @@ export async function DELETE(req: NextRequest) {
   const id = new URL(req.url).searchParams.get('id');
   if (!id) return NextResponse.json({ error: 'Missing ?id=' }, { status: 400 });
 
-  const data = readData();
-  const before = data.products.length;
-  data.products = data.products.filter((p: { id: string }) => p.id !== id);
-  if (data.products.length === before) {
+  const products = await readProducts();
+  const filtered = products.filter((p) => p.id !== id);
+  if (filtered.length === products.length) {
     return NextResponse.json({ error: 'Product not found' }, { status: 404 });
   }
-  writeData(data);
+  await writeProducts(filtered);
   revalidateAll();
   return NextResponse.json({ success: true });
 }

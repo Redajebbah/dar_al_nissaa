@@ -12,18 +12,20 @@ import {
 } from '@/data/products';
 import type { Metadata } from 'next';
 
-export const dynamic = 'force-dynamic'; // always fresh from JSON
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Dar Al Nissaa | Mode Marocaine Authentique & Luxe',
 };
 
-export default function HomePage() {
-  const categories   = getCategories();
-  const featured     = getFeaturedProducts();
-  const newProducts  = getNewProducts();
-  const bestsellers  = getBestSellers();
-  const promotions   = getPromotions();
+export default async function HomePage() {
+  const [categories, featured, newProducts, bestsellers, promotions] = await Promise.all([
+    getCategories(),
+    getFeaturedProducts(),
+    getNewProducts(),
+    getBestSellers(),
+    getPromotions(),
+  ]);
 
   return (
     <>

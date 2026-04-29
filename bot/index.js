@@ -155,12 +155,12 @@ async function askGroq(userMessage, products) {
 function productSummary(p) {
   return (
     `*${p.name.fr}*\n` +
-    `🆔 \`${p.id}\`  |  💰 ${p.price} MAD${p.originalPrice ? ` ~~${p.originalPrice}~~` : ''}\n` +
-    `📂 ${p.category}${p.subcategory ? ` › ${p.subcategory}` : ''}\n` +
-    `📏 Tailles: ${p.sizes.join(', ')}\n` +
-    `🎨 Couleurs: ${p.colors.map((c) => c.name).join(', ')}\n` +
-    `🏷️ Tags: ${(p.tags || []).join(', ') || '—'}\n` +
-    `🖼️ ${p.images.join(', ')}`
+    `ID: \`${p.id}\`  |  Prix: ${p.price} MAD${p.originalPrice ? ` (avant: ${p.originalPrice} MAD)` : ''}\n` +
+    `Categorie: ${p.category}${p.subcategory ? ` > ${p.subcategory}` : ''}\n` +
+    `Tailles: ${p.sizes.join(', ')}\n` +
+    `Couleurs: ${p.colors.map((c) => c.name).join(', ')}\n` +
+    `Tags: ${(p.tags || []).join(', ') || 'aucun'}\n` +
+    `Images: ${p.images.join(', ')}`
   );
 }
 
@@ -200,9 +200,9 @@ bot.on('text', async (ctx) => {
           return ctx.reply('📦 Aucun produit dans le catalogue.');
         }
         const list = products
-          .map((p, i) => `${i + 1}\\. \\[${p.id}\\] *${escMd(p.name.fr)}* — ${p.price} MAD`)
+          .map((p, i) => `${i + 1}. \`${p.id}\` — *${p.name.fr}* — ${p.price} MAD`)
           .join('\n');
-        await ctx.replyWithMarkdownV2(
+        await ctx.replyWithMarkdown(
           `📦 *Catalogue — ${products.length} produits:*\n\n${list}`
         );
         break;
